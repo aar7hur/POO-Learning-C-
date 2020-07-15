@@ -1,8 +1,8 @@
 #include <stdio.h>
 
 int main(){
-	int h, m, s;
-	int segTotal;
+	int h, m, s, segTotal;
+	
 	
 	h = 0;
 	m = 0;
