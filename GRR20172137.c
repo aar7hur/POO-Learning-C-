@@ -283,7 +283,11 @@ char tabuleiro (char matriz[3][3])
 }
 void limpaTela (void)
 {
-	system ("cls");
+	#ifdef _WIN32
+		system ("cls");
+	#else
+		system("clear");
+	#endif
 }
 void cabecalho (void)
 {
