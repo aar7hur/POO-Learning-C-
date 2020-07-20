@@ -37,6 +37,7 @@ void printTable(char **myBoard);
 char **createBoard();
 void verifyDiagonal(char **myBoard);
 void verifyLineAndColumn(char **myBoard);
+void verifyEnumState(char movement);
 void verifyWinner();
 void updateTerminal();
 extern void perror (const char *__s);
@@ -96,27 +97,25 @@ void verifyWinner()
 void verifyInput(char row, char col, char **myboard)
 {
     
-    rowPosition = getEnumFromString((char)row);
-    colPosition = getEnumFromString((char)col);
-
-    if(!(row >= 'A' && row <= 'C') && (col >='A' && col <= 'C'))
-    {
-        printf("Invalid play! Please enter the rows and columns between A and C\n");
-    }
-    else
+    if((row >= 'A' && row <= 'C') && (col >='A' && col <= 'C'))
     {
         rowPosition = getEnumFromString((char)row);
         colPosition = getEnumFromString((char)col);
-    }
-    if (myboard[rowPosition][colPosition] != ' ')
-    {
-        printf("Invalid play! This field has already been used to make a move\n");
+        if (myboard[rowPosition][colPosition] != ' ')
+        {
+            printf("Invalid play! This field has already been used to make a move\n");
 
+        }
+        else
+        {
+            validMovement = true;
+        }
     }
     else
     {
-        validMovement = true;
-    }
+     printf("Invalid play! Please enter the rows and columns between A and C\n");
+       
+    }  
 }
 
 InputUser getEnumFromString(const char s)
@@ -141,34 +140,76 @@ InputUser getEnumFromString(const char s)
 
 void verifyLineAndColumn(char **myBoard)
 {   
-    uint row = 0;
+    uint row = 1;
     uint line[3], column[3];
-    uint aux = 0;
+    uint aux = 1;
+    uint countLine = 0;
+    uint countCol = 0;
+    bool isLineEqual;
+    char result;
     
 
-    while (aux < SIZE)
+    while (aux <= SIZE)
     {   
-        line[row] = myBoard[aux][row];
-        column[row] = myBoard[row][aux];
-        row++;
-        if(row % SIZE == 0)
+        line[row-1] = myBoard[aux-1][row-1];
+        column[row-1] = myBoard[row-1][aux-1];
+        if((row % SIZE) == 0)
         {
             row = 0;
             aux++;
-            if((line[row] == line[row+1] && line[row+1] == line[row+2]) ||
-                column[row] == column[row+1] && column[row+1] == column[row+2])
+            
+            for(row; row < SIZE; row++)
             {
-                if(line[row] == xPlay || column[row] == xPlay)
+                if(!(line[row] == ' '))
                 {
-                    state = X_WON;
+                    countLine++;
+                    
                 }
-                else if(line[row] == oPlay || column[row] == oPlay)
+                if(!(column[row] == ' '))
                 {
-                    state = O_WON;
+                    countCol++;
                 }
             }
+            row = 0;
+            if (countCol == SIZE)
+            {
+                if((column[row] == column[row+1]) && (column[row+1] == column[row+2]))
+                {
+                    result = column[row];
+                    verifyEnumState(result);
+                    break;
+                }
+            }
+            if (countLine == SIZE)
+            {
+                if((line[row] == line[row+1]) && (line[row+1] == line[row+2]))
+                {
+                    result = line[row];
+                    verifyEnumState(result);
+                    break;
+                }
+            }
+            countLine = 0;
+            countCol = 0;
         }
+        row++;
     }
+}
+
+void verifyEnumState(char movement)
+{
+    if (movement == xPlay)
+    {
+        state = X_WON;
+    }
+    else if (movement == oPlay)
+    {
+        state = O_WON;
+    }
+    else
+    {
+        state = DRAW;
+    }  
 }
 
 void verifyDiagonal(char **myBoard)
@@ -176,6 +217,7 @@ void verifyDiagonal(char **myBoard)
     int fwDiag[3], revDiag[3];
     char initFowarValue = myBoard[0][0];
     char initReverValue = myBoard[0][2];
+    char result;
     uint aux = SIZE -1; 
     uint countRev, countFw;
     uint row;
@@ -196,16 +238,19 @@ void verifyDiagonal(char **myBoard)
         if (revDiag[row] == initReverValue)
             countRev++;
     }
-    if (countFw == SIZE || countRev == SIZE)
+    if (countFw == SIZE)
+        result = initFowarValue;
+       
+    else if (countRev == SIZE)
+        result = initReverValue;
+     
+    if (result == xPlay)
     {
-        if(initFowarValue == xPlay || initReverValue == xPlay)
-        {
-            state = X_WON;  
-        }
-        else if(initFowarValue == oPlay || initReverValue == oPlay)
-        {
-            state = O_WON;     
-        }     
+        state = X_WON;  
+    }
+    else if(result == oPlay)
+    {
+        state = O_WON;     
     }
 }
 
@@ -232,7 +277,7 @@ void playGame(char **myBoard, int row, int col)
        verifyDiagonal(myBoard);
        verifyLineAndColumn(myBoard);
     }
-    else if(moves == MAX_NUMBER_MOVES)
+    if(moves == MAX_NUMBER_MOVES)
     {
         state = DRAW;
     }
