@@ -29,6 +29,8 @@ typedef enum {
     C
 } InputUser;
 
+typedef unsigned int uint;
+
 void instructions();
 void verifyInput(char row, char col, char **myBoard);
 InputUser getEnumFromString(const char s);
@@ -120,7 +122,8 @@ void verifyInput(char row, char col, char **myboard)
 
 InputUser getEnumFromString(const char s)
 {
-   static struct {
+    uint i;
+    static struct {
         const char s;
         InputUser input;
     } map[] = {
@@ -129,7 +132,7 @@ InputUser getEnumFromString(const char s)
         { 'C', C },
     };
    
-    for (uint i = 0 ; i < sizeof(map)/sizeof(map[0]); i++) 
+    for (i = 0 ; i < sizeof(map)/sizeof(map[0]); i++) 
     {
         if (s == map[i].s) 
         {
@@ -140,14 +143,11 @@ InputUser getEnumFromString(const char s)
 
 void verifyLineAndColumn(char **myBoard)
 {   
-    uint row = 1;
+    uint row = 1, aux = 1;
     uint line[3], column[3];
-    uint aux = 1;
-    uint countLine = 0;
-    uint countCol = 0;
+    uint countLine = 0, countCol = 0;
     bool isLineEqual;
     char result;
-    
 
     while (aux <= SIZE)
     {   
@@ -214,7 +214,7 @@ void verifyEnumState(char movement)
 
 void verifyDiagonal(char **myBoard)
 {   
-    int fwDiag[3], revDiag[3];
+    uint fwDiag[3], revDiag[3];
     char initFowarValue = myBoard[0][0];
     char initReverValue = myBoard[0][2];
     char result;
@@ -290,6 +290,7 @@ char **createBoard()
     char **board; 
     board = (char**) malloc(SIZE * sizeof(char*));
     uint row;
+    uint col;
 
     for(row = 0 ; row < SIZE; row++)
     {
@@ -298,7 +299,7 @@ char **createBoard()
 
     for (row = 0; row < SIZE; row++)
     {
-        for (uint col = 0; col < SIZE; col++)
+        for (col = 0; col < SIZE; col++)
         {
             board[row][col] = initState;
         }
@@ -309,16 +310,18 @@ char **createBoard()
 
 void printTable(char **myBoard)
 {
+    uint row, col;
+
     updateTerminal();
     printf("\n  _________________ \n");
     printf(" |  A  |  B  |  C  |");
     printf("\n |_________________| \n");
-    for(uint i = 0; i < SIZE; ++i) 
+    for(row = 0; row < SIZE; ++row) 
     {
-        printf("%c|", 'A' + i);
-        for(uint j = 0; j < SIZE; ++j) 
+        printf("%c|", 'A' + row);
+        for(col = 0; col < SIZE; ++col) 
         {
-            printf("  %c  |", myBoard[i][j]);
+            printf("  %c  |", myBoard[row][col]);
         }
         printf("\n");
     }
