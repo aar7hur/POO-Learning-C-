@@ -74,6 +74,7 @@ int main()
         playGame(myBoard, rowPosition, colPosition);   
     }
     verifyWinner();
+    free(myBoard);
     return EXIT_SUCCESS;
 }
 
@@ -289,6 +290,8 @@ char **createBoard()
 {
     char **board; 
     board = (char**) malloc(SIZE * sizeof(char*));
+    
+
     uint row;
     uint col;
 
@@ -304,7 +307,7 @@ char **createBoard()
             board[row][col] = initState;
         }
     }
-
+    
     return board;
 }
 
