@@ -1,20 +1,41 @@
 /**
  * TIC TAC TOE implemented in c language
  * Author: Arthur Munhoz Amaral
+ * Date: 21/07/2020
+ * GRR20177243
+ * Language: C
+ * Programação Orientada a Objeto
+ * 
+ * Purpose: IMplement Tic Tac Toe in C.
  **/
 
+/*********************************************************************
+ * 
+ *   INCLUDES
+ * 
+ ********************************************************************/
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
 #include <string.h>
 
+/*********************************************************************
+ * 
+ *   DEFINES
+ * 
+ ********************************************************************/
 #define ROWS 3
 #define COLS 3
 #define SIZE 3
 #define MIN_NUMBER_MOVES_WIN 5
 #define MAX_NUMBER_MOVES 9
 
+/*********************************************************************
+ * 
+ *   ENUMS AND TYPEDEFS
+ * 
+ ********************************************************************/
 enum GameState {
     X_PLAYING,
     O_PLAYING,
@@ -30,6 +51,11 @@ typedef enum {
 } InputUser;
 
 typedef unsigned int uint;
+/*********************************************************************
+ * 
+ *   FUNCTIONS
+ * 
+ ********************************************************************/
 
 void instructions();
 void verifyInput(char row, char col, char **myBoard);
@@ -39,11 +65,15 @@ void printTable(char **myBoard);
 char **createBoard();
 void verifyDiagonal(char **myBoard);
 void verifyLineAndColumn(char **myBoard);
-void verifyEnumState(char movement);
+void setEnumState(char movement);
 void verifyWinner();
 void updateTerminal();
-extern void perror (const char *__s);
 
+/*********************************************************************
+ * 
+ *   VARIABLES
+ * 
+ ********************************************************************/
 const char xPlay = 'X';
 const char oPlay = 'O';
 const char initState = ' ';
@@ -51,7 +81,7 @@ int moves;
 bool validMovement;
 int rowPosition, colPosition;
 
-
+/** Main Function **/
 int main()
 {
     instructions();
@@ -78,6 +108,13 @@ int main()
     return EXIT_SUCCESS;
 }
 
+/*********************************************************************
+ *   Function: verifyWinner
+ * ----------------------
+ * Verify enum state to decide who won
+ *
+ * returns: nothing. Void functions
+ ********************************************************************/
 void verifyWinner()
 {
     char *outputLog;
@@ -97,9 +134,22 @@ void verifyWinner()
     printf("\n\nThe game is over. The result was ---> \t%s\n", outputLog);
 }
 
+/*********************************************************************
+ * Function: verifyInput
+ * ----------------------
+ * Checks the user's entry.
+ * Checks if the entry was a letter between A and C 
+ * and also checks if the play field is valid
+ *
+ * returns: nothing. Void function
+ ********************************************************************/
 void verifyInput(char row, char col, char **myboard)
 {
-    
+    if((row >= 'a' && row <= 'c') && (col >='a' && col <= 'c'))
+    {
+        row = (char)toupper(row);
+        col = (char)toupper(col);
+    }
     if((row >= 'A' && row <= 'C') && (col >='A' && col <= 'C'))
     {
         rowPosition = getEnumFromString((char)row);
@@ -120,7 +170,17 @@ void verifyInput(char row, char col, char **myboard)
        
     }  
 }
-
+/*********************************************************************
+ * Function: getEnumFromString
+ * ----------------------
+ * Converts the character typed by the user into a 
+ * valid row and column number by accessing an static
+ * struct.
+ * 
+ * const char s: User input.
+ *
+ * returns: An Enum type that refers to line and column
+ ********************************************************************/
 InputUser getEnumFromString(const char s)
 {
     uint i;
@@ -141,7 +201,18 @@ InputUser getEnumFromString(const char s)
         }
     }
 }
-
+/*********************************************************************
+ * Function: verifyLineAndColumn
+ * ----------------------
+ * Check each row and column to try to identify a 
+ * row or column with equal moves. If this happens, 
+ * read the row or column in question and decide to 
+ * change the state of the 'state' flag
+ * 
+ * char **myBoard: pointer wto the board
+ * 
+ * returns: Nothing. Void function
+ ********************************************************************/
 void verifyLineAndColumn(char **myBoard)
 {   
     uint row = 1, aux = 1;
@@ -177,7 +248,7 @@ void verifyLineAndColumn(char **myBoard)
                 if((column[row] == column[row+1]) && (column[row+1] == column[row+2]))
                 {
                     result = column[row];
-                    verifyEnumState(result);
+                    setEnumState(result);
                     break;
                 }
             }
@@ -186,7 +257,7 @@ void verifyLineAndColumn(char **myBoard)
                 if((line[row] == line[row+1]) && (line[row+1] == line[row+2]))
                 {
                     result = line[row];
-                    verifyEnumState(result);
+                    setEnumState(result);
                     break;
                 }
             }
@@ -196,10 +267,23 @@ void verifyLineAndColumn(char **myBoard)
         row++;
     }
 }
-
-void verifyEnumState(char movement)
+/*********************************************************************
+ * Function: setEnumState
+ * ----------------------
+ * Checks the flag state.
+ * Checks the caracter to set the enum's flag
+ *
+ * char movement: Character that will be read to set the flag status
+ * 
+ * returns: nothing. Void function
+ ********************************************************************/
+void  setEnumState(char movement)
 {
-    if (movement == xPlay)
+    if ((movement != xPlay) && (movement != oPlay))
+    {
+        return;
+    }
+    else if (movement == xPlay)
     {
         state = X_WON;
     }
@@ -207,12 +291,19 @@ void verifyEnumState(char movement)
     {
         state = O_WON;
     }
-    else
-    {
-        state = DRAW;
-    }  
 }
-
+/*********************************************************************
+ * Function: verifyDiagonal
+ * ----------------------
+ * Check each foward and reverse diagonal to find
+ * the one with all equal moves. If this happens, 
+ * read diagonal in question and decide to 
+ * change the state of the 'state' flag
+ *  
+ * char **myBoard: pointer wto the board
+ * 
+ * returns: Nothing. Void function
+ ********************************************************************/
 void verifyDiagonal(char **myBoard)
 {   
     uint fwDiag[3], revDiag[3];
@@ -244,17 +335,23 @@ void verifyDiagonal(char **myBoard)
        
     else if (countRev == SIZE)
         result = initReverValue;
-     
-    if (result == xPlay)
-    {
-        state = X_WON;  
-    }
-    else if(result == oPlay)
-    {
-        state = O_WON;     
-    }
-}
 
+    setEnumState(result); 
+}
+/*********************************************************************
+ * Function: playGame
+ * ----------------------
+ * Receives a board position, assigns that position 
+ * to the player (X or 0), draws the table in the 
+ * terminal and makes the winner checks.
+ *  
+ * int row: position of the line to be played
+ * int col: ṕsition of the col to be played
+ *
+ * char **myBoard: pointer wto the board
+ * 
+ * returns: Nothing. Void function
+ ********************************************************************/
 void playGame(char **myBoard, int row, int col)
 {
     char playAux;
@@ -278,20 +375,27 @@ void playGame(char **myBoard, int row, int col)
        verifyDiagonal(myBoard);
        verifyLineAndColumn(myBoard);
     }
-    if(moves == MAX_NUMBER_MOVES)
+    if(((moves == MAX_NUMBER_MOVES) && (state != X_WON) && (state != O_WON)))
     {
         state = DRAW;
     }
     moves++;
     validMovement = false;
 }
-
+/*********************************************************************
+ * Function: createBoard
+ * ----------------------
+ * Allocates a memory position for 3 char to 
+ * form the board. In each position 3 more chars 
+ * are allocated, thus forming a 2D 3x3 array.
+ * Also, start each matrix position with ''.
+ *
+ * returns: Board --> the matrix itself
+ ********************************************************************/
 char **createBoard()
 {
     char **board; 
     board = (char**) malloc(SIZE * sizeof(char*));
-    
-
     uint row;
     uint col;
 
@@ -307,10 +411,18 @@ char **createBoard()
             board[row][col] = initState;
         }
     }
-    
     return board;
 }
-
+/*********************************************************************
+ * Function: createBoard
+ * ----------------------
+ * Go through each position of the matrix and 
+ * show it on the screen while the game is played
+ *
+ * char **myBoard: pointer wto the board
+ *
+ * returns: Nothing. Vvoid function
+ ********************************************************************/
 void printTable(char **myBoard)
 {
     uint row, col;
@@ -330,7 +442,13 @@ void printTable(char **myBoard)
     }
    
 }
-
+/*********************************************************************
+ * Function: updateTerminal
+ * ----------------------
+ * Checks which operating system it is and cleans the terminal
+ * 
+ * returns: Nothing. Vvoid function
+ ********************************************************************/
 void updateTerminal()
 {
     #ifdef _WIN32 
@@ -339,7 +457,14 @@ void updateTerminal()
 	    system("clear");
     #endif
 }
-
+/********************************************************************* 
+ * Function Instructions()
+ * ------------------------
+ * Show instructions to user at the moment
+ * that game is started
+ *
+ * returns: Nothing. Void function
+ ********************************************************************/
 void instructions()
 {
     printf("To play tic tac toe, some instructions must be defined:\n");
