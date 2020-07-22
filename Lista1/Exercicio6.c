@@ -145,7 +145,7 @@ void verifyWinner()
  ********************************************************************/
 void verifyInput(char row, char col, char **myboard)
 {
-    if((row >= 'a' && row <= 'c') && (col >='a' && col <= 'c'))
+    if((row >= 'a' && row <= 'c') || (col >='a' && col <= 'c'))
     {
         row = (char)toupper(row);
         col = (char)toupper(col);
