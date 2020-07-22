@@ -59,7 +59,7 @@ typedef unsigned int uint;
 
 void instructions();
 void verifyInput(char row, char col, char **myBoard);
-InputUser getEnumFromString(const char s);
+int getEnumFromString(const char s);
 void playGame(char **myBoard, int row, int col);
 void printTable(char **myBoard);
 char **createBoard();
