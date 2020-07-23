@@ -9,7 +9,6 @@ typedef struct
 void cabecalho (void);
 void leituraNumeros (void);
 int mdc (num mdc);
-int mmC (num mmcA, num mmcB);
 void exibe (num exibeA, num exibeB, int xA, int xB);
 void soma (num somaA, num somaB);
 void sub (num subA, num subB);
@@ -46,9 +45,6 @@ void leituraNumeros (void)
 	
 	mdcA = mdc(numA);
 	mdcB = mdc(numB); 
-	mmc = mmC(numA, numB);
-	
-	//printf("MMC: %d\n", mmc);
 
 	exibe(numA, numB, mdcA, mdcB);
 	soma(numA, numB);
@@ -110,7 +106,7 @@ void divisao (num divA, num divB)
 	equacao.denominador = divB.numerador * divA.denominador;
 	x = mdc(equacao);
 	
-	printf("A / B = %d/%d = %d/%d = %f", equacao.numerador, equacao.denominador, equacao.numerador/x, equacao.denominador/x, (float)equacao.numerador/equacao.denominador);	
+	printf("A / B = %d/%d = %d/%d = %f\n", equacao.numerador, equacao.denominador, equacao.numerador/x, equacao.denominador/x, (float)equacao.numerador/equacao.denominador);	
 }
 int mdc (num mdc)
 {
@@ -123,22 +119,6 @@ int mdc (num mdc)
 		mdc.denominador = resto;
 	}while (resto != 0);
 	return mdc.numerador;
-}
-int mmC (num mmcA, num mmcB)
-{
-	int resto, a, b;
-	
-	a = mmcA.denominador;
-	b = mmcB.denominador;
-	
-	do
-	{
-		resto = a % b;
-		a = b;
-		b = resto;
-	}while (resto != 0);
-	
-	return (mmcA.denominador * mmcB.denominador) * a;
 }
 void cabecalho (void)
 {
