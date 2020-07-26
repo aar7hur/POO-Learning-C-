@@ -252,14 +252,23 @@ void *allocateMemory(size_t size)
  *  ********************************************************************/
 RationalNumber *getFromUserInput(char *outputString)
 {   
-    int n, d;
+    int n, d = 0;
   
     printf("%s",outputString );
     printf("Numerator:");
     n = readStdinBuffer();
 
     printf("Denominator:");
-    d = readStdinBuffer();
+
+    while(d==0)
+    {
+        d = readStdinBuffer();
+        if (d == 0)
+        {
+            printf("Please enter with a valid number. The denominator must be different from 0\n");
+            printf("Denominador:");
+        }
+    } 
 
     RationalNumber *rational = allocateMemory(sizeof *rational);
 
@@ -291,10 +300,7 @@ int readStdinBuffer()
     
     input = fgets(inputBuffer, MAX_DIGITS, stdin);
     integer = atoi(input);
-    if(integer == 0)
-    {
-        printf("Please enter with a valid number");
-    }
+
     return integer;
 }
 
