@@ -21,6 +21,12 @@
 
 using namespace std;
 
+struct horoscope_base
+{
+    const string sign;
+    const int date;
+};
+
 /*********************************************************
  * 
  *              Class declarations
@@ -30,38 +36,34 @@ using namespace std;
 class Datetime {
     private:;
         int day;
-        string month;
+        int month_int;
         int year;
+        std::string month;
         bool bissextile_year;
-        void set_month_name(int);
-        void set_day(int);
-        void set_year(int);
-        
     public:
         bool validates_parse_date(std::string);
         int converts_date(std::string);
         int get_day(void);
         std::string get_month(void);
+        int get_month_int(void);
+        bool get_bissextile_year(void);
         int get_year(void);
-};
-
-class Horoscope {
-    private:
-        std::string sign;
-    public:
-        void set_sign(string);
-        std::string get_sign(void);
+        void set_month_name(int);
+        void set_day(int);
+        void set_year(int);
+       
 };
 
 class User {
     private:
         Datetime date;
-        Horoscope horoscope;
+        std::string horoscope;
         void print_user(void);
+        void set_horoscope(void);
+        std::string get_horoscope(void);
     public:
         int run_api(string);
 };
-
 
 /*********************************************************
  * 
@@ -71,6 +73,7 @@ class User {
 int User::run_api(string date)
 {
     this->date.validates_parse_date(date);
+    this->set_horoscope();
     this->print_user();
 } 
 
@@ -78,6 +81,50 @@ void User::print_user(void)
 {
     cout << this->date.get_day() << " de " << this->date.get_month();
     cout << " de " << this->date.get_year() << "\n";
+    cout << "Signo: " << this->get_horoscope() << "\n";
+    if (this->date.get_bissextile_year() == true)
+    {
+        cout << "É ano bissexto.";
+    }
+    else
+    {
+        cout << "Não é ano bissexto.";
+    }
+    
+}
+
+void User::set_horoscope(void)
+{
+    vector<horoscope_base>  sign_date {
+        {"Aquário", 1020},  
+        {"Peixes", 2019},
+        {"Áries", 3021},
+        {"Touro", 4020},
+        {"Gẽmeos", 5021},
+        {"Câncer", 6021},
+        {"Leão", 7023},
+        {"Virgem", 8023},
+        {"Libra", 9023},
+        {"Escorpião", 10023},
+        {"Ságitário", 11022},
+        {"Capricórnio", 12022}
+    };
+    int day = this->date.get_day();
+    int month = this->date.get_month_int();
+    int payload = 1000*month + day;
+
+    for (int i = 0 ; i < sign_date.size(); i++) 
+    {
+        if (payload >= sign_date[i].date && payload < sign_date[i+1].date)
+        {
+            this->horoscope = sign_date[i].sign;
+        }
+    }
+}
+
+std::string User::get_horoscope(void)
+{
+    return this->horoscope;
 }
 
 /*********************************************************
@@ -105,6 +152,11 @@ void Datetime::set_year(int year)
     {
         this->bissextile_year = true;
     }
+    else
+    {
+        this->bissextile_year = false;
+    }
+    
 }
 
 void Datetime::set_month_name(int month)
@@ -119,6 +171,7 @@ void Datetime::set_month_name(int month)
     if ((month > 0) && (month <= 12))
     {
         this->month = months_of_year[month-1];
+        this->month_int = month;
     }
     else
     {
@@ -170,9 +223,18 @@ std::string Datetime::get_month(void)
     return this->month;
 }
 
+int Datetime::get_month_int(void)
+{
+    return this->month_int;
+}
+
 int Datetime::get_day(void)
 {
     return this->day;
+}
+bool Datetime::get_bissextile_year(void)
+{
+    return this->bissextile_year;
 }
 
 bool Datetime::validates_parse_date(const std::string date)
@@ -200,7 +262,6 @@ bool Datetime::validates_parse_date(const std::string date)
     this->set_year(year);
     this->set_day(day);
 }
-
 
 int main()
 {
