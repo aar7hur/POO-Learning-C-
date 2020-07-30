@@ -193,6 +193,11 @@ RationalNumber *multiplyRational(RationalNumber *a, RationalNumber *b)
 RationalNumber *divideRational(RationalNumber *a, RationalNumber *b)
 {
     RationalNumber *divide = allocateMemory(sizeof(*divide));
+    if((*b).numerator == 0)
+    {
+        printf("\nNão é possivel realizar a divisão! O denominador ficará em 0 \n");
+        exit(EXIT_FAILURE);
+    }
 
     (*divide).numerator = (*a).numerator * (*b).denominator;
     (*divide).denominator = (*a).denominator * (*b).numerator;
