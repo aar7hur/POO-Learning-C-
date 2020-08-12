@@ -43,7 +43,7 @@ ComplexNumber::ComplexNumber(double real, double imaginary)
     module =  sqrt((real*real + imaginary*imaginary));
     angle = atan2(imaginary, real) * 180/PI;
 }
-tem tma coisa pr
+
 ComplexNumber ComplexNumber::operator+(ComplexNumber& complex)
 {
     ComplexNumber Result(
@@ -56,8 +56,8 @@ ComplexNumber ComplexNumber::operator+(ComplexNumber& complex)
 ComplexNumber ComplexNumber::operator-(const ComplexNumber& complex)
 {
     ComplexNumber Result(
-        real_part - complex.real_part,
-        imaginary_part - complex.imaginary_part
+        (real_part - complex.real_part),
+        (imaginary_part - complex.imaginary_part)
     );
     return Result;
 }
@@ -74,7 +74,7 @@ ComplexNumber ComplexNumber::operator*(const ComplexNumber& complex)
 ComplexNumber ComplexNumber::operator/(const ComplexNumber& complex)
 {
     ComplexNumber Result(
-        (real_part*complex.real_part) / (pow(complex.real_part,2) + pow(complex.imaginary_part,2)),
+        (real_part*complex.real_part + imaginary_part*complex.imaginary_part) / (pow(complex.real_part,2) + pow(complex.imaginary_part,2)),
         (imaginary_part*complex.real_part - complex.imaginary_part*real_part) / (pow(complex.real_part,2) + pow(complex.imaginary_part,2))
     );
     return Result;
@@ -82,7 +82,7 @@ ComplexNumber ComplexNumber::operator/(const ComplexNumber& complex)
 
 ostream& operator << (ostream& out, ComplexNumber& complex)
 {   
-    if (complex.get_imaginary_part() > 0)
+    if (complex.get_imaginary_part() >= 0)
     {
         complex.set_sign('+');
     }
@@ -94,7 +94,7 @@ ostream& operator << (ostream& out, ComplexNumber& complex)
 
     // Print complex number in polar form
     out << "\t Valor na forma polar: ";
-    out << "(" << complex.get_module() << "°" << complex.get_angle() <<  ")" << endl;
+    out << "(" << complex.get_module() << " /_ " << complex.get_angle() <<  ")" << endl;
 
     return out;
 }
