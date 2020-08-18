@@ -23,6 +23,7 @@ métodos para:
 using namespace std;
 
 int run_operations(ComplexNumber& A, ComplexNumber& B);
+ostream& operator << (ostream& out, ComplexNumber& complex);
 
 int main(int argc, char** argv)
 {
