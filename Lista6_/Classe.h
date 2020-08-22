@@ -4,7 +4,7 @@
  *  Created on: 21 de ago de 2020
  *      Author: amaralA
  *      nome,
- *	endereço, cidade, estado, CEP e telefone)
+ *	endereï¿½o, cidade, estado, CEP e telefone)
  */
 
 
@@ -12,6 +12,7 @@
 #define CLASSE_H_
 
 #include <string>
+#include <iostream>
 
 class Empresa{
 	protected:
@@ -31,7 +32,7 @@ class Empresa{
 class Restaurante : public Empresa
 {
 	protected:
-		float preco_medio;
+		std::string preco_medio;
 		std::string tipo_comida;
 	public:
 		Restaurante();

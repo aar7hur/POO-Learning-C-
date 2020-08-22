@@ -17,7 +17,7 @@
  *  Created on: 21 de ago de 2020
  *      Author: amaralA
  *      nome,
- *	endereço, cidade, estado, CEP e telefone)
+ *	endereï¿½o, cidade, estado, CEP e telefone)
  */
 
 Empresa::Empresa()
@@ -36,7 +36,6 @@ Empresa::~Empresa()
 
 void Empresa::putdata(void)
 {
-
 	std::cout << "nome: " << this->nome << std::endl;
 	std::cout << "cidade: " << this->cidade << std::endl;
 	std::cout << "estado: " << this->estado << std::endl;
@@ -61,6 +60,29 @@ void Empresa::getdata(void)
 }
 
 
+Restaurante::Restaurante(std::string *dados)
+	:Empresa(dados)
+	{
+		tipo_comida = dados[5];
+		preco_medio = dados[6];
+	};
+	
+
+void Restaurante::getdata(void)
+{
+	std::cout << "Digite o os dados do restaurante " << std::endl;
+	std::cout << "Tipo de comida: ";
+	std::cin >> tipo_comida;
+	std::cout << "Preco medio: ";
+	std::cin >> preco_medio;
+}
+
+void Restaurante::putdata(void)
+{
+	Empresa:putdata();
+	std::cout << "Tipo de comida: " << this->tipo_comida << std::endl;
+	std::cout << "Preco medio do prato: " << this->preco_medio<< std::endl;
+}
 
 
 
