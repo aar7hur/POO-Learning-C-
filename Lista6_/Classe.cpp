@@ -9,7 +9,7 @@
 #include "Classe.h"
 #include <iostream>
 #include <stdio.h>
-
+	
 
 /*
  * Classe.h
@@ -17,22 +17,31 @@
  *  Created on: 21 de ago de 2020
  *      Author: amaralA
  *      nome,
- *	endere�o, cidade, estado, CEP e telefone)
+ *	endereco, cidade, estado, CEP e telefone)
  */
 
-Empresa::Empresa()
+Empresa::Empresa(void)
 {}
+
+Restaurante::Restaurante(void)
+{
+    Empresa();
+}
 
 Empresa::Empresa(std::string *dados)
-	:nome(dados[0]),
-	cidade(dados[1]),
-	estado(dados[2]),
-	cep(dados[3]),
-	telefone(dados[4])
+	:nome(*dados),
+	cidade(*(++dados)),
+	estado(*(++dados)),
+	cep(*(++dados)),
+	telefone((*++dados))
 {}
 
-Empresa::~Empresa()
-{}
+Restaurante::Restaurante(std::string *dados)
+	:Empresa(dados)
+	{
+		tipo_comida = *(++dados);
+		preco_medio = *(++dados);
+	};
 
 void Empresa::putdata(void)
 {
@@ -60,16 +69,12 @@ void Empresa::getdata(void)
 }
 
 
-Restaurante::Restaurante(std::string *dados)
-	:Empresa(dados)
-	{
-		tipo_comida = dados[5];
-		preco_medio = dados[6];
-	};
-	
 
+
+	
 void Restaurante::getdata(void)
 {
+    Empresa::getdata();
 	std::cout << "Digite o os dados do restaurante " << std::endl;
 	std::cout << "Tipo de comida: ";
 	std::cin >> tipo_comida;
@@ -81,17 +86,5 @@ void Restaurante::putdata(void)
 {
 	Empresa:putdata();
 	std::cout << "Tipo de comida: " << this->tipo_comida << std::endl;
-	std::cout << "Preco medio do prato: " << this->preco_medio<< std::endl;
+	std::cout << "Preco medio do prato: " << this->preco_medio << std::endl;
 }
-
-
-
-
-
-
-
-
-
-
-
-
