@@ -30,9 +30,7 @@ int main(int argc, char** argv)
 
 void testa_motor(void)
 {
-	int num_cilindros = 10;
-	int potencia = 150;
-	Motor testa_construtor(10, 150);
+	Motor testa_construtor(NumCilindro, Potencia);
 	
 	std::cout << "\n*****************************************\n";
 	cout << "---->Testando a classe Motor atraves do construtor!" << endl;
@@ -47,9 +45,7 @@ void testa_motor(void)
 
 void testa_veiculo(void)
 {
-	int peso = 900;
-	int VelocMax = 180;
-	Veiculo testa_construtor(900, 180);
+	Veiculo testa_construtor(Peso, VelocMax);
 	std::cout << "\n*****************************************\n";
 	cout << "--->Testando a classe Veiculo atraves do construtor! \n" << endl;
 	testa_construtor.putdata();
