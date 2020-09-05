@@ -1,90 +1,70 @@
-/*
- * Classe.cpp
- *
- *  Created on: 21 de ago de 2020
- *      Author: amaralA
- */
-
-
-#include "Classe.h"
 #include <iostream>
-#include <stdio.h>
-	
+#include <string>
+#include "Classe.h"
 
-/*
- * Classe.h
- *
- *  Created on: 21 de ago de 2020
- *      Author: amaralA
- *      nome,
- *	endereco, cidade, estado, CEP e telefone)
- */
-
-Empresa::Empresa(void)
+Empresa::Empresa()
 {}
 
-Restaurante::Restaurante(void)
+Empresa::Empresa(string nome, string endereco, string cidade, 
+				string estado, string cep, string telefone)
 {
-    Empresa();
+	this->nome = nome;
+	this->endereco = endereco;
+	this->cidade = cidade;
+	this->estado = estado;
+	this->cep = cep;
+	this->telefone = telefone;
 }
-
-Empresa::Empresa(std::string *dados)
-	:nome(*dados),
-	cidade(*(++dados)),
-	estado(*(++dados)),
-	cep(*(++dados)),
-	telefone((*++dados))
-{}
-
-Restaurante::Restaurante(std::string *dados)
-	:Empresa(dados)
+Restaurante::Restaurante(string nome, string endereco, string cidade, 
+					string estado, string cep, string telefone,
+					string comida, string preco)
+	:Empresa(nome, endereco, cidade, estado, cep, telefone)
 	{
-		tipo_comida = *(++dados);
-		preco_medio = *(++dados);
-	};
+		this->comida = comida;
+		this->preco = preco;
+	}
 
-void Empresa::putdata(void)
+Restaurante::Restaurante() : Empresa(){}
+
+void Restaurante::getdata()
 {
-	std::cout << "nome: " << this->nome << std::endl;
-	std::cout << "cidade: " << this->cidade << std::endl;
-	std::cout << "estado: " << this->estado << std::endl;
-	std::cout << "telefone: " << this->telefone << std::endl;
-	std::cout << "cep: " << this->cep << std::endl;
+	std::cout << "\nParametros do Restaurante: \n";
+	Empresa::getdata();
+	std::cout << "\tTipo de comida: ";
+	std::getline(std::cin, comida);
+	std::cout << "\tPreco medio da comida: ";
+	std::getline(std::cin, preco);
 }
-
-void Empresa::getdata(void)
-{	
-
-	std::cout << "Digite os dados para empresa " << std::endl;
-	std::cout << "Nome: ";
-	std::cin >> nome;
-	std::cout << "Estado: ";
-	std::cin >> estado;
-	std::cout << "Telefone: ";
-	std::cin >> telefone;
-	std::cout << "Cep: ";
-	std::cin >> cep;
-	std::cout << "Cidade: ";
-	std::cin >> cidade;
-}
-
-
-
-
-	
-void Restaurante::getdata(void)
+void Empresa::getdata()
 {
-    Empresa::getdata();
-	std::cout << "Digite o os dados do restaurante " << std::endl;
-	std::cout << "Tipo de comida: ";
-	std::cin >> tipo_comida;
-	std::cout << "Preco medio: ";
-	std::cin >> preco_medio;
+	std::cout << "\tNome: ";
+	std::getline(std::cin, nome);	
+	std::cout << "\tEndereco: ";
+	std::getline(std::cin, endereco);
+	std::cout << "\tCidade: ";
+	std::getline(std::cin, cidade);
+	std::cout << "\tEstado: ";
+	std::getline(std::cin, estado);
+	std::cout << "\tCEP: ";
+	std::getline(std::cin, cep);
+	std::cout << "\tTelelefone: ";
+	std::getline(std::cin, telefone);
 }
-
-void Restaurante::putdata(void)
+void Restaurante::putdata()
 {
-	Empresa:putdata();
-	std::cout << "Tipo de comida: " << this->tipo_comida << std::endl;
-	std::cout << "Preco medio do prato: " << this->preco_medio << std::endl;
+	std::cout << "\nAtributos do restaurante: \n";
+	Empresa::putdata();
+	std::cout << "Tipo da comida: " << this->comida << "\n";
+	std::cout << "Preco medio da comida: " << this->preco << "\n";
 }
+void Empresa::putdata()
+{
+	std::cout << "\nNome: " << this->nome << "\n";
+	std::cout << "Endereco: " << this->endereco << "\n";
+	std::cout << "Cidade: " << this->cidade << "\n";
+	std::cout << "Estado: " << this->estado << "\n";
+	std::cout << "CEP: " << this->cep << "\n";
+	std::cout << "Telefone: " << this->telefone << "\n"; 
+}
+Empresa::~Empresa(){}
+Restaurante::~Restaurante(){}
