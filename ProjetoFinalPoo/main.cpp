@@ -1,10 +1,9 @@
-#include "UserInterface.h"
+#include "UserInterface.cpp"
+#include <iostream>
 
 
-int main()
+int main(int argc, char * argv[])
 {
-	UserInterface *usr = new UserInterface;
-	usr->create_menu()
-	usr->create_backgroung_image();
-	usr->display_window();
+	UserInterface *user = new UserInterface(&argc, &argv);
+	user->run_window();
 }
