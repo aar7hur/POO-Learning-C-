@@ -26,23 +26,23 @@ class UserInterface
 		GtkWidget *virtual_box;
 		GtkWidget *horizontal_box;
 		GtkWidget *file_menu;
-		GtkWidget *menu_item;
+		GtkWidget *menu_item_file;
+		GtkWidget *menu_item_help;
 		GtkWidget *menu;
 		GtkWidget *layout;
-		GtkWidget *entry_action;
-		GtkWidget *entry_money;
+		GtkWidget **entries;
 		GtkWidget *table;
-		GtkWidget *label_action;
-		GtkWidget *label_money;
+		GtkWidget **labels;
+		GdkRGBA *color;
 		std::string user_input;
 		enum Window window_status;
-		static void destroy(GtkWidget *widget, gpointer data);
 		void create_menu(void);
 		void create_background_image(void);
 		void display_window(void);
 		void create_user_entry(void);
 		static void menu_event(GtkWidget *menu_event, gpointer data);
-		static void entry_submit(GtkWidget* button_clicked, gpointer data);
+		static void entry_submit(GtkWidget** entry, GtkWidget *widget);
+		static void destroy(GtkWidget *widget, gpointer data);
 
 	public:
 		UserInterface();
