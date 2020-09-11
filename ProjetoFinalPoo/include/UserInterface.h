@@ -1,4 +1,6 @@
 #include <gtk/gtk.h>
+#include "menu.h"
+#include "layout.h"
 #include <string>
 
 enum Window
@@ -15,34 +17,20 @@ enum Window
 * gets user input 
 *
 ******************************************/
-class UserInterface
+class UserInterface: public Menu, public Layout
 {
 	private:
-		GtkWidget *window;
-		GtkWidget *button;
-		GtkWidget *image;
-		GtkWidget *menu_bar;
-		GtkWidget *help_menu;
-		GtkWidget *virtual_box;
-		GtkWidget *horizontal_box;
-		GtkWidget *file_menu;
-		GtkWidget *menu_item_file;
-		GtkWidget *menu_item_help;
-		GtkWidget *menu;
-		GtkWidget *layout;
-		GtkWidget **entries;
-		GtkWidget *table;
-		GtkWidget **labels;
-		GdkRGBA *color;
 		std::string user_input;
 		enum Window window_status;
+		static void menu_event(GtkWidget *menu_event, gpointer data);
+		static void entry_submit(GtkWidget** entry, GtkWidget *widget);
+		static void destroy(GtkWidget *widget, gpointer data);
+
+	protected:
 		void create_menu(void);
 		void create_background_image(void);
 		void display_window(void);
 		void create_user_entry(void);
-		static void menu_event(GtkWidget *menu_event, gpointer data);
-		static void entry_submit(GtkWidget** entry, GtkWidget *widget);
-		static void destroy(GtkWidget *widget, gpointer data);
 
 	public:
 		UserInterface();
