@@ -1,6 +1,6 @@
-#include "decision.h"
-#include "readcsv.h"
-#include "movingAverage.h"
+#include "../include/decision.h"
+#include "../include/readcsv.h"
+#include "../include/movingAverage.h"
 #include <string>
 
 /*******************************************************************************
@@ -11,23 +11,59 @@
  *	retorna: nada. Apenas popula os atributos da classe
  * OBS: Essa função será chamada uma vez apenas
  ******************************************************************************/
-void Decision::populateData(std::string ativo, std::string tipo){
+void Decision::populateData(std::string ativo){
 
-    Tabela meuAtivo(ativo, tipo);
+    try{
 
+        this->populateAverage(ativo);
+        this->populateCloseWeek(ativo);
+        this->populateStochastic(ativo);
+    }
+    catch(...)
+    {
+        std::cout << "Erro! Não existe esse ativo no sistema";
+        exit(-1);
+    }
+}
+void Decision::populateAverage(std::string ativo){
+
+    
+    Tabela meuAtivo(ativo, "d");
     float *array;
+    meuAtivo["Close"] >> array;
+    std::cout << ativo;
+
     this->movingAverage.setmovingAverage(array, 20);
     this->decisionData.average_20 = this->movingAverage.getAverage();
 
     this->movingAverage.setmovingAverage(array, 50);
     this->decisionData.average_50 = this->movingAverage.getAverage();
+    std::cout << "ok pupulate average";
 
-    //******************************************************
-    // IMplementar parte do jefferson para popular float stochastic_8;
+}
+void Decision::populateCloseWeek(std::string ativo)
+{
+    Tabela meuAtivoClosed(ativo, "w");
+    float *arrayClose;
+    meuAtivoClosed["Close"] >> arrayClose; //ver quantas posições retorna no array
+    this->decisionData.closeWeek = arrayClose[0];
 
-    //***********************
-    //Popular highdaily e lowDaily da struct
+}
 
+void Decision::populateStochastic(std::string ativo)
+{
+    Tabela meuAtivoSto(ativo, "d");
+    float *arraySto;
+
+    meuAtivoSto["Close"] >> arraySto; //ver quantas posições retorna no array
+    this->stochastic.setPrice(arraySto);
+    this->stochastic.getHighDailyPrice();
+    this->stochastic.getLowDailyPrice();
+    this->stochastic.getKcurve();
+    this->stochastic.averageKcurve();
+    this->decisionData.stochastic_8 = this->stochastic.getResult();
+    this->decisionData.highDaily = this->stochastic.getHighDailyPrice();
+    this->decisionData.lowDaily = this->stochastic.getLowDailyPrice();
 }
 
 /*******************************************************************************
@@ -39,8 +75,10 @@ void Decision::populateData(std::string ativo, std::string tipo){
  * OBS: Essa função será chamada uma vez apenas após pupulateData()
  ******************************************************************************/
 
-void Decision::doDecision(void)
-{
+calculation Decision::doDecision(void)
+{   
+    this->calculation_process = WAITING_FOR_CALCULATION;
+
     if(this->isPurchaseAction() == true)
     {
         this->purchaseAction = true;
@@ -51,6 +89,9 @@ void Decision::doDecision(void)
     }
 
     this->managmentRisk();
+    this->calculation_process = CALCULATION_IS_OVER;
+
+    return this->calculation_process;
     
 }
 
@@ -113,13 +154,13 @@ void Decision::managmentRisk()
     float stopLoss, trigger, riskTrade;
     
 
-    stopLoss = *lowDaily;
-	trigger = *highDaily;
+    stopLoss = this->decisionData.lowDaily;
+	trigger = this->decisionData.highDaily;
 
     if(this->purchaseAction = true)
     {
         target = ((trigger - stopLoss) * 3) + trigger;
-	    while(riskTrade < (0.01*userMoney)){
+	    while(riskTrade < (0.01*this->userMoney)){
                 
             riskTrade = (trigger - stopLoss) * qtdStocks;
             qtdStocks++;	
@@ -130,7 +171,7 @@ void Decision::managmentRisk()
     else if(this->purchaseAction = false)
     {
         target = trigger - ((stopLoss - trigger) * 3);
-		while(riskTrade < (0.01*userMoney)){
+		while(riskTrade < (0.01*this->userMoney)){
 			riskTrade = (stopLoss - trigger) * qtdStocks;
 			qtdStocks++;	
 		}

@@ -3,6 +3,7 @@
 
 #include <gtk/gtk.h>
 #include "menu.h"
+#include "decision.h"
 #include "layout.h"
 #include <string>
 
@@ -29,6 +30,7 @@ class UserInterface: public Menu, public Layout
 		static void entry_submit(GtkWidget** entry, GtkWidget *widget);
 		static void destroy(GtkWidget *widget, gpointer data);
 		static gboolean update_progress_bar(GtkProgressBar* progress_bar);
+		static void printResult();
 	
 	protected:
 		void create_menu(void);

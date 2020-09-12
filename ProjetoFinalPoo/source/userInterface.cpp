@@ -5,7 +5,8 @@
  * */
 
 #include <iostream>
-#include "userInterface.h"
+#include "../include/userInterface.h"
+#include "../include/decision.h"
 #include <cstring>
 #define NDEBUG
 #include <cassert>
@@ -191,15 +192,30 @@ void UserInterface::menu_event(GtkWidget *menu_item, gpointer data)
 
 void UserInterface::entry_submit(GtkWidget **entry, GtkWidget *widget)
 {
+    Decision decision;
+    
+    const gchar *action, *money;
+
     GtkWidget *entry_ptr_action = entry[0];
     GtkWidget *entry_ptr_money = entry[1];
 
-    const gchar *action, *money;
-
+    
     action = gtk_entry_get_text(GTK_ENTRY (entry_ptr_action));
-    g_print("A ação que vocẽ deseja avaliar é: %s\n", action);
+    //g_print("A ação que vocẽ deseja avaliar é: %s\n", action);
     money = gtk_entry_get_text(GTK_ENTRY (entry_ptr_money));
-    g_print("O montante de dinheiro que voce tem é: %s\n", money);
+    //g_print("O montante de dinheiro que voce tem é: %s\n", money);
+
+    std::string action_(action);
+    std::string money_(money);
+    float user_money = std::stof(money_);
+    std::cout << action_ << std::endl;
+    std::cout << user_money << std::endl;
+
+
+    decision.setUserMoney(user_money);
+    decision.populateData(action_);
+    while(decision.doDecision() != CALCULATION_IS_OVER);
+    
     
 }
 
@@ -211,4 +227,5 @@ gboolean UserInterface::update_progress_bar(GtkProgressBar* progress_bar)
     
     return TRUE;
 }
+
 

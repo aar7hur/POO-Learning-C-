@@ -1,4 +1,4 @@
-#include "movingAverage.h"
+#include "../include/movingAverage.h"
 
 /*******************************************************************************
  *	Função: movingAverage
@@ -24,5 +24,5 @@ float MovingAverage::getAverage(void){
 	return this->average;
 }
 
-MovingAverage::MovingAverage(float *priceCloseWeek, int period){}
+MovingAverage::MovingAverage(){}
 MovingAverage::~MovingAverage(){}
