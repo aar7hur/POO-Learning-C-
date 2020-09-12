@@ -215,10 +215,6 @@ void UserInterface::entry_submit(GtkWidget **entry, GtkWidget *widget)
     decision.populateData(action_);
     while(decision.doDecision() != CALCULATION_IS_OVER);
 
-    decision.setUserMoney(user_money);
-    decision.populateData(action_);
-    while(decision.doDecision() != CALCULATION_IS_OVER);
-
     struct Decision::userData user;
 
     user = decision.getUserData();
