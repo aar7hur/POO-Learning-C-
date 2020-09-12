@@ -158,7 +158,6 @@ void UserInterface::create_user_entry()
 
 GtkWidget* UserInterface::create_progress_bar(void)
 {
-    std::cout << "teste";
     GtkWidget *progress_bar;
     progress_bar = gtk_progress_bar_new();
 
@@ -215,6 +214,25 @@ void UserInterface::entry_submit(GtkWidget **entry, GtkWidget *widget)
     decision.setUserMoney(user_money);
     decision.populateData(action_);
     while(decision.doDecision() != CALCULATION_IS_OVER);
+
+    decision.setUserMoney(user_money);
+    decision.populateData(action_);
+    while(decision.doDecision() != CALCULATION_IS_OVER);
+
+    struct Decision::userData user;
+
+    user = decision.getUserData();
+
+    std::string stopLoss = std::to_string(user.stopLoss);
+    std::string trigger = std::to_string(user.trigger); 
+    std::string target = std::to_string(user.target);
+    std::string qtdStocks = std::to_string(user.qtdStocks);
+
+    std::string outputUser = user.message + "!!\n" + "stopLoss:" + stopLoss +
+                            "!\nTrigger: " + trigger + "!\nTarget: " + target +
+                            "!\nQtdStocks: " + qtdStocks;
+    std::cerr << outputUser;
+
     
     
 }

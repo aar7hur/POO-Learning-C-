@@ -31,15 +31,12 @@ void Decision::populateAverage(std::string ativo){
     Tabela meuAtivo(ativo, "d");
     float *array;
     meuAtivo["Close"] >> array;
-    std::cout << ativo;
 
     this->movingAverage.setmovingAverage(array, 20);
     this->decisionData.average_20 = this->movingAverage.getAverage();
 
     this->movingAverage.setmovingAverage(array, 50);
     this->decisionData.average_50 = this->movingAverage.getAverage();
-    std::cout << "ok pupulate average";
-
 }
 void Decision::populateCloseWeek(std::string ativo)
 {
