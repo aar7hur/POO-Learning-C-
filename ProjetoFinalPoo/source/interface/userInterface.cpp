@@ -4,8 +4,8 @@
  * 
  * */
 
-
-#include "../include/UserInterface.h"
+#include <iostream>
+#include "userInterface.h"
 #include <cstring>
 #define NDEBUG
 #include <cassert>
@@ -114,7 +114,7 @@ void UserInterface::create_background_image()
 
 void UserInterface::create_user_entry()
 {
-
+    GtkWidget* aux;
     gdk_rgba_parse(color, "rgba(255,255,255,2)");
     
     /* Create a 1x2 table */
@@ -131,7 +131,7 @@ void UserInterface::create_user_entry()
     //create label for text box
     this->labels[0] = gtk_label_new("Qual ação deseja avaliar");
     gtk_grid_attach (GTK_GRID (this->table),this->labels[0], 1, 0, 1, 1);
-    gtk_widget_override_color(this->labels[0],  GTK_STATE_FLAG_NORMAL, color);
+    gtk_widget_override_color(this->labels[0],  GTK_STATE_FLAG_NORMAL, this->color);
   
 
     this->entries[1] = gtk_entry_new();
@@ -141,16 +141,28 @@ void UserInterface::create_user_entry()
     //create label for text box
     this->labels[1] = gtk_label_new("Qual o montante que você investirá");
     gtk_grid_attach (GTK_GRID (this->table),this->labels[1], 1, 1, 1, 1);
-    gtk_widget_override_color(this->labels[1],  GTK_STATE_FLAG_NORMAL, color);
+    gtk_widget_override_color(this->labels[1],  GTK_STATE_FLAG_NORMAL, this->color);
 
     
     //create button to perform calculations
     this->button = gtk_button_new_with_mnemonic("RUN!");
-    g_signal_connect_swapped (button, "clicked", G_CALLBACK (entry_submit), this->entries);
-    gtk_grid_attach (GTK_GRID (table), button, 0, 2, 1, 1);
+    g_signal_connect_swapped (this->button, "clicked", G_CALLBACK (entry_submit), this->entries);
+    gtk_grid_attach (GTK_GRID (this->table), this->button, 0, 2, 1, 1);
+    aux = this->create_progress_bar();
 
+    gtk_widget_set_size_request(aux,30,30);
+    gtk_grid_attach (GTK_GRID (this->table), aux, 0, 3, 1, 1);
+    g_timeout_add( 100, (GSourceFunc)this->update_progress_bar, aux);
 }
 
+GtkWidget* UserInterface::create_progress_bar(void)
+{
+    std::cout << "teste";
+    GtkWidget *progress_bar;
+    progress_bar = gtk_progress_bar_new();
+
+    return progress_bar;
+}
 
 void UserInterface::run_window(void)
 {   
@@ -190,4 +202,13 @@ void UserInterface::entry_submit(GtkWidget **entry, GtkWidget *widget)
     g_print("O montante de dinheiro que voce tem é: %s\n", money);
     
 }
+
+gboolean UserInterface::update_progress_bar(GtkProgressBar* progress_bar)
+{
+    gtk_progress_bar_pulse(progress_bar);
+    gtk_progress_bar_get_pulse_step(progress_bar);
+    gtk_progress_bar_set_show_text(progress_bar, FALSE);
     
+    return TRUE;
+}
+

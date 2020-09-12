@@ -1,5 +1,7 @@
-#include <gtk/gtk.h>
+#ifndef LAYOUT_HEADER_GUARD
+#define LAYOUT_HEADER_GUARD
 
+#include <gtk/gtk.h>
 
 
 class Layout
@@ -15,8 +17,12 @@ class Layout
         GtkWidget *table;
         GtkWidget **labels;
         GdkRGBA *color;
+        
    
         void create_background_image(void);
         void display_window(void);
         void create_user_entry(void);
+        GtkWidget *create_progress_bar(void);
 };
+
+#endif

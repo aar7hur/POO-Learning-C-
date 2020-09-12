@@ -1,3 +1,6 @@
+#ifndef MENU_HEADER_GUARD
+#define MENU_HEADER_GUARD
+
 #include <gtk/gtk.h>
 #include <string>
 
@@ -15,3 +18,4 @@ class Menu
         void create_menu(void);
 };
 
+#endif
