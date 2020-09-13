@@ -28,7 +28,7 @@ void Decision::populateData(std::string ativo){
 void Decision::populateAverage(std::string ativo){
 
     
-    Tabela meuAtivo(ativo, "d");
+    Tabela meuAtivo(ativo, "w");
     float *array;
     meuAtivo["Close"] >> array;
 
