@@ -3,6 +3,7 @@
 #include "../include/movingAverage.h"
 #include <string>
 #include <algorithm>
+#include <iostream>
 
 /*******************************************************************************
  *	Função: populateData
