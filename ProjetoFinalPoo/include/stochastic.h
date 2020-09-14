@@ -1,3 +1,4 @@
+#include <cstddef>
 
 class Stochastic
 {
@@ -20,11 +21,14 @@ class Stochastic
         ~Stochastic();
         void setLowDailyPrice(void);
         void setHighDailyPrice(void);
-        void setPrice(float *);
+        void setPrice(float *, size_t);
         void getKcurve(void);
         void averageKcurve(void);
         float getResult(void);
         float getLowDailyPrice(void);
         float getHighDailyPrice(void);
+        size_t valoresMinimos(float * output, float * inputArray, size_t inputSize);
+        size_t valoresMaximos(float * output, float * inputArray, size_t inputSize);
+        size_t kValues(float * output, float * arrayMin, float* arrayMax, float* arrayClose, size_t sizeClose);
 
 };
