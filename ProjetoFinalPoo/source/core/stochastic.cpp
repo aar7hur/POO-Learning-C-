@@ -5,6 +5,15 @@
 Stochastic::Stochastic(){}
 Stochastic::~Stochastic(){}
 
+/*******************************************************************************
+ *	Stochastic:: setHighDailyPrice
+ *	----------------------
+ * 	Le os dados e verifica o maior preço da ação no intervalo
+ *  de dados estipulados.
+ *	recebe:: nada. Apenas popula os atributos da classe
+ *  retorna: nada
+ * OBS: Essa função será chamada uma vez apenas
+ ******************************************************************************/
 void Stochastic::setHighDailyPrice(void)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 {
     float priceCloseDaily[200], price[200+16];
@@ -29,15 +38,21 @@ void Stochastic::setHighDailyPrice(void)
             }
         }
         this->stochasticData.priceHighDaily[i] = bestprice;
-        //ver sentido dos dados, Primeiro mais recente ou mais antigo
+
     }
     this->highPriceDaily = priceHighDaily[0];
 }
 
 
-//////////////////
-
-// Função %K:
+/*******************************************************************************
+ *	Stochastic:: KVaues
+ *	----------------------
+ * 	Le os dados e verifica o maior preço da ação no intervalo
+ *  de dados estipulados.
+ *	recebe:: nada. Apenas popula os atributos da classe
+ *  retorna: nada
+ * OBS: Essa função será chamada uma vez apenas
+ ******************************************************************************/
 size_t Stochastic::kValues(float * output, float * arrayMin, float* arrayMax, float* arrayClose, size_t sizeClose){
     enum { magic_periodos = 8};
     float kArray[sizeClose]; size_t kSize=0;
@@ -55,7 +70,7 @@ size_t Stochastic::kValues(float * output, float * arrayMin, float* arrayMax, fl
     return kSize;
 }
 
-// float Stochastic::valorK( float * inputArray, size_t inputSize)
+// Comentar
 
 size_t Stochastic::valoresMinimos(float * output, float * inputArray, size_t inputSize){
     enum { magic_periodos = 8};
@@ -110,8 +125,15 @@ size_t Stochastic::valoresMaximos(float * output, float * inputArray, size_t inp
 }
 
 
-///////////////////
-
+/*******************************************************************************
+ *	Stochastic:: setLowDAyPrice
+ *	----------------------
+ * 	Le os dados e verifica o menor preço da ação no intervalo
+ *  de dados estipulados.
+ *	recebe:: nada. Apenas popula os atributos da classe
+ *  retorna: nada
+ * OBS: Essa função será chamada uma vez apenas
+ ******************************************************************************/
 void Stochastic::setLowDailyPrice(void)
 {
     int n = 8;
@@ -143,8 +165,17 @@ void Stochastic::getKcurve(void)
         ((this->stochasticData.price[i] - this->stochasticData.priceLowDaily[i])
         /(this->stochasticData.priceLowDaily[i]-this->stochasticData.priceLowDaily[i]));
     }
+    this->stochasticResult = this->stochasticData.Kcurve[0];
 }
 
+
+/*******************************************************************************
+ *	Stochastic:: averageKcurve
+ *	----------------------
+ * 	Calcula a média da curvaK e guarda num dado da struct
+ *	recebe:: nada. 
+ *  retorna: nada Apenas popula os atributos da classe
+ ******************************************************************************/
 void Stochastic::averageKcurve(void)
 {
     for(int i = 0; i < 200; i++) {
@@ -153,6 +184,13 @@ void Stochastic::averageKcurve(void)
     }
 }
 
+/*******************************************************************************
+ *	Stochastic:: averageKcurve
+ *	----------------------
+ * 	Calcula a média da curvaK e guarda num dado da struct
+ *	recebe:: nada. 
+ *  retorna: nada Apenas popula os atributos da classe
+ ******************************************************************************/
 void Stochastic::setPrice(float* price, size_t arraySize)
 {
     for(int i = 0; i < arraySize; i++)
@@ -161,17 +199,37 @@ void Stochastic::setPrice(float* price, size_t arraySize)
     }
 }
 
+/*******************************************************************************
+ *	Stochastic:: getResult
+ *	----------------------
+ * 	Acessa o atributo privado stochasticResult e retorna seu conteudo
+ *	recebe:: nada. 
+ *  retorna: this->stochasticResult
+ ******************************************************************************/
 float Stochastic::getResult(void)
 {
-    this->stochasticResult = this->stochasticData.Kcurve[0];
     return this->stochasticResult;
 }
 
-
+/*******************************************************************************
+ *	Stochastic:: getLowDailyPrice
+ *	----------------------
+ * 	Acessa o atributo privado lowPriceDaily retorna seu conteudo
+ *	recebe:: nada. 
+ *  retorna: this->lowPriceDaily
+ ******************************************************************************/
 float Stochastic::getLowDailyPrice(void)
 {
     return this->lowPriceDaily;
 }
+
+/*******************************************************************************
+ *	Stochastic:: geHighPriceDaily
+ *	----------------------
+ * 	Acessa o atributo privado highPriceDAily retorna seu conteudo
+ *	recebe:: nada. 
+ *  retorna: this->highPriceDaily
+ ******************************************************************************/
 float Stochastic::getHighDailyPrice(void)
 {
     return this->highPriceDaily;

@@ -8,11 +8,26 @@
 #include "movingAverage.h"
 #include "stochastic.h"
 
+enum calculation
+{
+    WAITING_FOR_CALCULATION,
+    CALCULATION_IS_OVER,
+};
+
+ struct userData {
+    float stopLoss;
+    float trigger;
+    float target;
+    float qtdStocks;
+    std::string message;
+};
+
 class Decision
 {
 	private:
 	bool purchaseAction;
     float userMoney;
+    enum calculation calculation_process;
 	struct dataForDecision {
 		float closeWeek;
 		float average_20;
@@ -21,7 +36,8 @@ class Decision
         float highDaily;
 		float lowDaily;
 	} decisionData;
-
+    
+    struct userData outputUser;
     MovingAverage movingAverage;
     Stochastic stochastic;
     bool isPurchaseAction(void);
@@ -32,19 +48,7 @@ class Decision
     void populateCloseWeek(std::string ativo);
 
 	public:
-    enum calculation
-    {
-        WAITING_FOR_CALCULATION,
-        CALCULATION_IS_OVER,
-    } calculation_process;
-    struct userData {
-        float stopLoss;
-        float trigger;
-        float target;
-        float qtdStocks;
-        std::string message;
-    } outputUser;
-
+    enum calculation calculation_progress;
     float getUserMoney(void);
     void setUserMoney(float);
 	void populateData(std::string);

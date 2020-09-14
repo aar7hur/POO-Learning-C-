@@ -17,8 +17,10 @@ enum Window
 
 /******************************************s
 *
-* Class used to create an user interface and
-* gets user input 
+* Classe usada para criar a interface com o 
+* usuário, receber os dados de entrada e 
+* utilizar classes auxiliares para fazer
+* os cálculos nessecários.
 *
 ******************************************/
 class UserInterface: public Menu, public Layout

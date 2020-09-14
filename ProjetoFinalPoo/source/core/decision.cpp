@@ -28,6 +28,15 @@ void Decision::populateData(std::string ativo){
         exit(-1);
     }
 }
+
+/*******************************************************************************
+ *	Decision:: populateAverage
+ *	----------------------
+ * 	Faz as medias moveis de 20 e 50 dados e popula as variaveis da struct
+ *  com os resultados das médias
+ *  receb: std::string Ativo. Qual ativo irá buscar no banco de dados
+ *  retorna: nada
+ ******************************************************************************/
 void Decision::populateAverage(std::string ativo){
 
     Ativo meuAtivo(ativo, "w");
@@ -43,6 +52,15 @@ void Decision::populateAverage(std::string ativo){
     // Foi testado aqui, lendo e calculando average corretamente, mexer daqui pra frente
     
 }
+
+/*******************************************************************************
+ *	Decision:: popuCloseWeek
+ *	----------------------
+ * 	Busca no banco de dados o fechamento do preço da ação da semana e 
+ *  populaa variavel da struct que corresponde a isso.
+ *  receb: std::string Ativo. Qual ativo irá buscar no banco de dados
+ *  retorna: nada
+ ******************************************************************************/
 void Decision::populateCloseWeek(std::string ativo)
 {
     Ativo meuAtivoClosed(ativo, "w");
@@ -52,9 +70,20 @@ void Decision::populateCloseWeek(std::string ativo)
 
 }
 
+
+/*******************************************************************************
+ *	Decision:: populateStochastic
+ *	----------------------
+ * 	Busca no banco de dados e faz os calculos estocasticos populando 
+ *  a struct decisionData com os dados necessários para fazer a decisão
+ *  de compra ou venda.
+ *  recebe: nada
+ *  retorna: nada
+ ******************************************************************************/
 void Decision::populateStochastic(std::string ativo)
 {
-    enum {magic_periodo = 8}; // Máximo de dados do CSV que devem ser usados
+    // Máximo de dados do CSV que devem ser usados
+    enum {magic_periodo = 8}; 
     
     // Le a coluna de Close
     Ativo meuAtivoSto(ativo, "d");
@@ -91,10 +120,9 @@ void Decision::populateStochastic(std::string ativo)
  * OBS: Essa função será chamada uma vez apenas após pupulateData()
  ******************************************************************************/
 
-
-Decision::calculation Decision::doDecision(void)
+calculation Decision::doDecision(void)
 {   
-    this->calculation_process = Decision::WAITING_FOR_CALCULATION;
+    this->calculation_process = WAITING_FOR_CALCULATION;
 
     if(this->isPurchaseAction() == true)
     {
@@ -107,7 +135,7 @@ Decision::calculation Decision::doDecision(void)
 
     this->managementRisk();
     
-    this->calculation_process = Decision::CALCULATION_IS_OVER;
+    this->calculation_process = CALCULATION_IS_OVER;
 
     return this->calculation_process;
     
@@ -117,7 +145,7 @@ Decision::calculation Decision::doDecision(void)
  *	Função: isSaleDecision
  *	----------------------
  * 	Função dedicada a a verificar se a ação deve ser vendida dentro da regra
- *  de negócios estiplada
+ *  de negócios estipulada
  *	recebe: nada
  *	retorna: booleano se a ação deve ser vendida
  ******************************************************************************/
@@ -136,7 +164,7 @@ bool Decision::isSaleAction(void)
  *	Função: isPurchasecision
  *	----------------------
  * 	Função dedicada a a verificar se a ação pode ser comprada dentro da regra
- *  de negócios estiplada
+ *  de negócios estipulada
  *	recebe: nada
  *	retorna: booleano se a ação deve ser comprada.
  ******************************************************************************/
@@ -193,7 +221,6 @@ void Decision::managementRisk()
 		}
 	     this->outputUser.message  = "Venda";
     }
-
     this->outputUser.stopLoss = stopLoss;
     this->outputUser.trigger = trigger;
     this->outputUser.target = target;
@@ -233,8 +260,9 @@ void Decision::setUserMoney(float money)
  *	recebe: nada
  *	retorna: struct outputUser 
  ******************************************************************************/
-Decision::userData Decision::getUserData(void)
-{
+userData Decision::getUserData(void)
+{   
+    std::cout << this->outputUser.stopLoss;
     return this->outputUser;
 }
 
