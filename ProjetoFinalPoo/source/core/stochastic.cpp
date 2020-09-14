@@ -1,9 +1,11 @@
 #include "../include/stochastic.h"
+#include <iostream> //debug
+#include <cstring>
 
 Stochastic::Stochastic(){}
 Stochastic::~Stochastic(){}
 
-void Stochastic::setHighDailyPrice(void)
+void Stochastic::setHighDailyPrice(void)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 {
     float priceCloseDaily[200], price[200+16];
     float  bestprice;
@@ -31,6 +33,84 @@ void Stochastic::setHighDailyPrice(void)
     }
     this->highPriceDaily = priceHighDaily[0];
 }
+
+
+//////////////////
+
+// Função %K:
+size_t Stochastic::kValues(float * output, float * arrayMin, float* arrayMax, float* arrayClose, size_t sizeClose){
+    enum { magic_periodos = 8};
+    float kArray[sizeClose]; size_t kSize=0;
+    float k;
+    
+    for(size_t i=magic_periodos; i < sizeClose; ++i){
+        k = ( arrayClose[i] - arrayMin[i-magic_periodos] ) / ( arrayMax[i-magic_periodos] - arrayMin[i-magic_periodos] );
+        k *= 100;
+        kArray[kSize++] = k;
+    }
+    
+    output = new float[kSize];
+    memcpy(output, kArray, kSize);
+    
+    return kSize;
+}
+
+// float Stochastic::valorK( float * inputArray, size_t inputSize)
+
+size_t Stochastic::valoresMinimos(float * output, float * inputArray, size_t inputSize){
+    enum { magic_periodos = 8};
+    int y=0;
+    int z=0;
+    size_t arraySize=0;
+    int arrayMinimos[inputSize];
+    
+    for(size_t i=0; i < inputSize-magic_periodos; ++i){
+        
+	    z=inputArray[y];
+	    for(size_t j=0; j < magic_periodos; ++j){
+		    if(z>inputArray[y+1]){
+			    z=inputArray[y+1];
+		    }
+		    y++;
+	    }
+	    arrayMinimos[arraySize++] = z;
+	    y -= magic_periodos-1;
+    }
+    
+    output = new float[arraySize];
+    memcpy(output, arrayMinimos, arraySize);
+
+    return arraySize;
+}
+
+
+size_t Stochastic::valoresMaximos(float * output, float * inputArray, size_t inputSize){
+    enum { magic_periodos = 8 };
+    int y=0;
+    int z=0;
+    size_t arraySize=0;
+    int arrayMaximos[inputSize];
+    
+    for(size_t i=0; i < inputSize-magic_periodos; ++i){
+	    z=inputArray[y];
+	    for(size_t j=0; j < magic_periodos; ++j){
+		    if(z<inputArray[y+1]){
+			    z=inputArray[y+1];
+		    }
+		    y++;
+	    }
+	    arrayMaximos[arraySize++] = z;
+	    y -= magic_periodos-1;
+    }
+
+    output = new float[arraySize];
+    memcpy(output, arrayMaximos, arraySize);
+
+    return arraySize;    
+}
+
+
+///////////////////
 
 void Stochastic::setLowDailyPrice(void)
 {
@@ -73,9 +153,9 @@ void Stochastic::averageKcurve(void)
     }
 }
 
-void Stochastic::setPrice(float* price)
+void Stochastic::setPrice(float* price, size_t arraySize)
 {
-    for(int i = 0; i < 216; i++)
+    for(int i = 0; i < arraySize; i++)
     {
         this->stochasticData.price[i] = price[i];
     }
@@ -96,4 +176,3 @@ float Stochastic::getHighDailyPrice(void)
 {
     return this->highPriceDaily;
 }
-
