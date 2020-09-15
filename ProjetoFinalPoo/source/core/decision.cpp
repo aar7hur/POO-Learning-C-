@@ -1,6 +1,7 @@
 #include "../include/decision.h"
 #include "../include/readcsv.h"
 #include "../include/movingAverage.h"
+#include "gtk/gtk.h"
 #include <string>
 #include <algorithm>
 #include <iostream>
@@ -48,7 +49,8 @@ void Decision::populateAverage(std::string ativo){
 
     this->movingAverage.setmovingAverage(array, 50);
     this->decisionData.average_50 = this->movingAverage.getAverage();
-    
+    g_print("\nAverage 20: %f", this->decisionData.average_20);
+    g_print("\nAverage 50 %f", this->decisionData.average_50);
     // Foi testado aqui, lendo e calculando average corretamente, mexer daqui pra frente
     
 }
@@ -67,6 +69,7 @@ void Decision::populateCloseWeek(std::string ativo)
     float *arrayClose;
     meuAtivoClosed["Close"] >> arrayClose; //ver quantas posições retorna no array
     this->decisionData.closeWeek = arrayClose[0];
+    g_print("\nCloseWeek: %f\n", this->decisionData.closeWeek);
 
 }
 
@@ -87,25 +90,28 @@ void Decision::populateStochastic(std::string ativo)
     
     // Le a coluna de Close
     Ativo meuAtivoSto(ativo, "d");
+   
     
     // Popula arrayClose
-    float *arrayClose; size_t sizeClose;
+    gfloat *arrayClose; size_t sizeClose;
     sizeClose = meuAtivoSto["Close"](magic_periodo) >> arrayClose;
-    float closeMaisRecente = arrayClose[0];
+    gfloat closeMaisRecente = arrayClose[0];
     
     // Ler Baixas
-    float *arrayLow; size_t sizeLow;
+    gfloat *arrayLow; size_t sizeLow;
     sizeLow = meuAtivoSto["Low"](magic_periodo) >> arrayLow;
-    float minimaDoPeriodo = *( std::min_element(arrayLow, &arrayLow[sizeLow]) );
+    gfloat minimaDoPeriodo = *( std::min_element(arrayLow, &arrayLow[sizeLow]) );
     
     // Ler Altas
-    float *arrayHigh; size_t sizeHigh;
+    gfloat *arrayHigh; size_t sizeHigh;
     sizeHigh = meuAtivoSto["High"](magic_periodo) >> arrayHigh;
-    float maximaDoPeriodo = *( std::min_element(arrayHigh, &arrayHigh[sizeHigh]) );
+    gfloat maximaDoPeriodo = *( std::max_element(arrayHigh, &arrayHigh[sizeHigh]) );
     
     // Calcular %K
-    float kValue = 100*( closeMaisRecente - minimaDoPeriodo)/(maximaDoPeriodo - minimaDoPeriodo);
     
+    gfloat kValue = ( closeMaisRecente - minimaDoPeriodo)/(maximaDoPeriodo - minimaDoPeriodo);
+    kValue = 100.00*kValue;
+
     this->decisionData.lowDaily = minimaDoPeriodo;
     this->decisionData.highDaily = maximaDoPeriodo;
     this->decisionData.stochastic_8 = kValue;
@@ -262,10 +268,8 @@ void Decision::setUserMoney(float money)
  ******************************************************************************/
 userData Decision::getUserData(void)
 {   
-    std::cout << this->outputUser.stopLoss;
     return this->outputUser;
 }
-
 
 Decision::Decision(){}
 Decision::~Decision(){}

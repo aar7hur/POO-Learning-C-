@@ -17,8 +17,8 @@ enum calculation
  struct userData {
     float stopLoss;
     float trigger;
-    float target;
-    float qtdStocks;
+    int target;
+    int qtdStocks;
     std::string message;
 };
 

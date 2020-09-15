@@ -31,12 +31,13 @@ struct _stoi {
 }
 stoi;
 
-struct _stof {
+namespace Auxiliar{
+    struct _stof {
     float operator()(std::string string) {
         return std::stof(string);
     }
+}stof;
 }
-stof;
 
 struct _stod {
     double operator()(std::string string) {
@@ -205,7 +206,7 @@ size_t Coluna_Interface::operator >> (int * & array) {
 }
 
 size_t Coluna_Interface::operator >> (float * & array) {
-    return coluna -> jogarPraArray < float > (array, stof, requestSize);
+    return coluna -> jogarPraArray < float > (array, Auxiliar::stof, requestSize);
 }
 
 size_t Coluna_Interface::operator >> (double * & array) {

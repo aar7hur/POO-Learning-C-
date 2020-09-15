@@ -51,7 +51,7 @@ void Stochastic::setHighDailyPrice(void)
  *  de dados estipulados.
  *	recebe:: nada. Apenas popula os atributos da classe
  *  retorna: nada
- * OBS: Essa função será chamada uma vez apenas
+ *  OBS: Essa função será chamada uma vez apenas
  ******************************************************************************/
 size_t Stochastic::kValues(float * output, float * arrayMin, float* arrayMax, float* arrayClose, size_t sizeClose){
     enum { magic_periodos = 8};
@@ -69,61 +69,6 @@ size_t Stochastic::kValues(float * output, float * arrayMin, float* arrayMax, fl
     
     return kSize;
 }
-
-// Comentar
-
-size_t Stochastic::valoresMinimos(float * output, float * inputArray, size_t inputSize){
-    enum { magic_periodos = 8};
-    int y=0;
-    int z=0;
-    size_t arraySize=0;
-    int arrayMinimos[inputSize];
-    
-    for(size_t i=0; i < inputSize-magic_periodos; ++i){
-        
-	    z=inputArray[y];
-	    for(size_t j=0; j < magic_periodos; ++j){
-		    if(z>inputArray[y+1]){
-			    z=inputArray[y+1];
-		    }
-		    y++;
-	    }
-	    arrayMinimos[arraySize++] = z;
-	    y -= magic_periodos-1;
-    }
-    
-    output = new float[arraySize];
-    memcpy(output, arrayMinimos, arraySize);
-
-    return arraySize;
-}
-
-
-size_t Stochastic::valoresMaximos(float * output, float * inputArray, size_t inputSize){
-    enum { magic_periodos = 8 };
-    int y=0;
-    int z=0;
-    size_t arraySize=0;
-    int arrayMaximos[inputSize];
-    
-    for(size_t i=0; i < inputSize-magic_periodos; ++i){
-	    z=inputArray[y];
-	    for(size_t j=0; j < magic_periodos; ++j){
-		    if(z<inputArray[y+1]){
-			    z=inputArray[y+1];
-		    }
-		    y++;
-	    }
-	    arrayMaximos[arraySize++] = z;
-	    y -= magic_periodos-1;
-    }
-
-    output = new float[arraySize];
-    memcpy(output, arrayMaximos, arraySize);
-
-    return arraySize;    
-}
-
 
 /*******************************************************************************
  *	Stochastic:: setLowDAyPrice
@@ -186,7 +131,7 @@ void Stochastic::averageKcurve(void)
 
 /*******************************************************************************
  *	Stochastic:: averageKcurve
- *	----------------------
+ *	----------------------f
  * 	Calcula a média da curvaK e guarda num dado da struct
  *	recebe:: nada. 
  *  retorna: nada Apenas popula os atributos da classe

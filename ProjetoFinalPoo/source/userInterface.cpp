@@ -6,8 +6,12 @@
 #include "../include/userInterface.h"
 #include "../include/decision.h"
 #include <cstring>
+#include <fstream>
 #define NDEBUG
 #include <cassert>
+#include <fstream>
+
+#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
 /*************************************************
  * UserInterface :: UserInterface --> CONSTRUCTOR
@@ -30,7 +34,7 @@ UserInterface::UserInterface(int *argc, char ***argv)
     this->virtual_box = gtk_box_new(GTK_ORIENTATION_VERTICAL,0);
     this->horizontal_box = gtk_box_new(GTK_ORIENTATION_VERTICAL,0);
 	this->button = gtk_button_new_with_label("Start ");
-	this->image =  gtk_image_new_from_file("/home/arthur/Downloads/StockMarket.jpg");
+	this->image =  gtk_image_new_from_file("/home/arthur/StockMarket.jpg");
     this->menu_bar = gtk_menu_bar_new();
     this->help_menu = gtk_menu_new();
     this->file_menu = gtk_menu_new();
@@ -246,7 +250,7 @@ GtkWidget* UserInterface::create_progress_bar(void)
 void UserInterface::run_window(void)
 {   
     this->create_background_image();
-    this->create_menu();
+    //this->create_menu();
     this->create_user_entry();
     this->display_window();
 }
@@ -301,21 +305,21 @@ void UserInterface::entry_submit(GtkWidget **entry, GtkWidget *widget)
 
     // Pega a ação de entrada do usuário e guarda 
     action = gtk_entry_get_text(GTK_ENTRY (entry_ptr_action));
-    //g_print("A ação que vocẽ deseja avaliar é: %s\n", action);
+    g_print("A ação que vocẽ deseja avaliar é: %s\n", action);
 
     // Pega o montande de dinheiro de entrada do usuário e guarda 
     money = gtk_entry_get_text(GTK_ENTRY (entry_ptr_money));
-    //g_print("O montante de dinheiro que voce tem é: %s\n", money);
+    g_print("O montante de dinheiro que voce tem é: %s\n", money);
 
     // Converte *gchar para string
     std::string action_(action);
-    std::string money_(money);
 
-    // Converte o montante, agora em string, para float
-    float user_money = std::stof(money_);
-    std::cout << action_ << std::endl;
-    std::cout << user_money << std::endl;
 
+    // Converte opara float
+    float user_money = (float)(strtod(money,NULL));
+    g_print("User money: %f", user_money);
+
+    //std::cout << typeid(user_money).name();
     // Seta a quantidade de dinheiro que o usuário passou
     // na interface para a classe decisão.
     decision.setUserMoney(user_money);
@@ -340,12 +344,14 @@ void UserInterface::entry_submit(GtkWidget **entry, GtkWidget *widget)
     std::string trigger = std::to_string(user.trigger); 
     std::string target = std::to_string(user.target);
     std::string qtdStocks = std::to_string(user.qtdStocks);
-
     // Printa os dados para o usuário no terminal
     std::string outputUser = user.message + "!!\n" + "stopLoss:" + stopLoss +
                             "!\nTrigger: " + trigger + "!\nTarget: " + target +
                             "!\nQtdStocks: " + qtdStocks;
-
+    
+   
+    std::cout << outputUser;
+    
 }
 /***********************************************
  * UserInterface :: entry_submit

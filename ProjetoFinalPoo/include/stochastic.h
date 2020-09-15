@@ -12,8 +12,8 @@ class Stochastic
         float priceHighDaily[200];
         float priceLowDaily[200];
         float Kcurve[200];
-        float KcurveAverage[202]; 
-        float price[216];
+        float KcurveAverage[200]; 
+        float price[200];
     } stochasticData;
 
     public:
@@ -30,5 +30,4 @@ class Stochastic
         size_t valoresMinimos(float * output, float * inputArray, size_t inputSize);
         size_t valoresMaximos(float * output, float * inputArray, size_t inputSize);
         size_t kValues(float * output, float * arrayMin, float* arrayMax, float* arrayClose, size_t sizeClose);
-
 };
