@@ -1,5 +1,7 @@
 #include <cstddef>
 
+#define MAX_ARRAY_SIZE 200
+
 class Stochastic
 {
     private:
@@ -8,12 +10,12 @@ class Stochastic
     float highPriceDaily;
     float kcurve;
     struct stochasticData {
-        float priceCloseDaily[200];
-        float priceHighDaily[200];
-        float priceLowDaily[200];
-        float Kcurve[200];
-        float KcurveAverage[200]; 
-        float price[200];
+        float priceCloseDaily[MAX_ARRAY_SIZE];
+        float priceHighDaily[MAX_ARRAY_SIZE];
+        float priceLowDaily[MAX_ARRAY_SIZE];
+        float Kcurve[MAX_ARRAY_SIZE];
+        float KcurveAverage[MAX_ARRAY_SIZE]; 
+        float price[MAX_ARRAY_SIZE];
     } stochasticData;
 
     public:

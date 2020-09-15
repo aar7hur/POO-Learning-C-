@@ -16,17 +16,16 @@ Stochastic::~Stochastic(){}
  ******************************************************************************/
 void Stochastic::setHighDailyPrice(void)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 {
-    float priceCloseDaily[200], price[200+16];
+    float priceCloseDaily[MAX_ARRAY_SIZE], price[MAX_ARRAY_SIZE+16];
     float  bestprice;
-    float priceHighDaily[200];
+    float priceHighDaily[MAX_ARRAY_SIZE];
     int n = 8; // n = intervalo que deseja analisar
 
-    // 200 = len(std::<vector>)
-    for(int i = 0; i < 200; i ++) {
+    for(int i = 0; i < MAX_ARRAY_SIZE; i ++) {
         priceCloseDaily[i] = price[i];
     }
 
-    for(int i = 0; i < 200; i++) {
+    for(int i = 0; i < MAX_ARRAY_SIZE; i++) {
         if(i > 8) {
             n++;
         }
@@ -83,9 +82,9 @@ void Stochastic::setLowDailyPrice(void)
 {
     int n = 8;
     float worstprice;
-    float priceLowDaily[200];
+    float priceLowDaily[MAX_ARRAY_SIZE];
 
-    for(int i = 0; i < 200; i++) {
+    for(int i = 0; i < MAX_ARRAY_SIZE; i++) {
         if(i > 8) {
             n++;
         }
@@ -103,9 +102,9 @@ void Stochastic::setLowDailyPrice(void)
 
 void Stochastic::getKcurve(void)
 {
-    float Kcurve[200];
+    float Kcurve[MAX_ARRAY_SIZE];
 
-    for(int i = 0; i < 200+ 2; i++) {
+    for(int i = 0; i < MAX_ARRAY_SIZE + 2; i++) {
         this->stochasticData.Kcurve[i] = 100 * 
         ((this->stochasticData.price[i] - this->stochasticData.priceLowDaily[i])
         /(this->stochasticData.priceLowDaily[i]-this->stochasticData.priceLowDaily[i]));
@@ -123,7 +122,7 @@ void Stochastic::getKcurve(void)
  ******************************************************************************/
 void Stochastic::averageKcurve(void)
 {
-    for(int i = 0; i < 200; i++) {
+    for(int i = 0; i < MAX_ARRAY_SIZE; i++) {
         this->stochasticData.KcurveAverage[i] = this->stochasticData.Kcurve[i] + 
         this->stochasticData.Kcurve[i + 1] + this->stochasticData.Kcurve[i + 2];
     }
